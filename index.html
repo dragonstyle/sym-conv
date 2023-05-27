@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.100">
+<meta name="generator" content="quarto-1.3.361">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -120,7 +120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>*I’m aware that, mathematically speaking, what I’m implementing here is actually <em>cross-correlation</em> rather than convolution. But this is what deep-learning practitioners call convolution, so I’m going with it. <a href="https://towardsdatascience.com/convolution-vs-correlation-af868b6b4fb5">This article</a> offers a good description of the differences. tl;dr: in true mathematical convolution, you’re supposed to flip the kernel 180° before applying it.</p>
 </blockquote>
-<div id="cell-5" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convolve(X: np.ndarray, <span class="bu">filter</span>: np.ndarray, zero_pad_width: <span class="bu">int</span>, stride: <span class="bu">int</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    X_pad <span class="op">=</span> np.pad(</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        X,</span>
@@ -152,7 +152,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can test it with some sample data.</p>
-<div id="cell-7" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.array(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    [</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        [<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>, <span class="fl">4.0</span>,],</span>
@@ -180,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>test_eq(convolve(X_test, f_test, <span class="dv">0</span>, <span class="dv">1</span>), expected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-8" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test output of our convolve function is consistent with scipy</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>test_eq(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    convolve(X_test, f_test, <span class="dv">0</span>, <span class="dv">1</span>), <span class="co"># ours</span></span>
@@ -191,7 +191,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="convolution-with-symbols" class="level2">
 <h2 class="anchored" data-anchor-id="convolution-with-symbols">Convolution with Symbols</h2>
 <p>It turns out, the same convolution code works just as well when the contents of the input arrays are symbols instead of numbers. We can use the symbolic expression library, <a href="https://www.coursera.org/specializations/deep-learning">SymPy</a>, to represent symbols.</p>
-<div id="cell-10" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.array([</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    [Symbol(<span class="vs">r'x_</span><span class="sc">{11}</span><span class="vs">'</span>), Symbol(<span class="vs">r'x_</span><span class="sc">{12}</span><span class="vs">'</span>), Symbol(<span class="vs">r'x_</span><span class="sc">{13}</span><span class="vs">'</span>), Symbol(<span class="vs">r'x_</span><span class="sc">{14}</span><span class="vs">'</span>),],</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    [Symbol(<span class="vs">r'x_</span><span class="sc">{21}</span><span class="vs">'</span>), Symbol(<span class="vs">r'x_</span><span class="sc">{22}</span><span class="vs">'</span>), Symbol(<span class="vs">r'x_</span><span class="sc">{23}</span><span class="vs">'</span>), Symbol(<span class="vs">r'x_</span><span class="sc">{24}</span><span class="vs">'</span>),],</span>
@@ -220,7 +220,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Each element of the output array is an <em>expression</em> in terms of the input symbols that defines how that element is calculated. We can pretty-print the first-one to see it better:</p>
-<div id="cell-12" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>result[<span class="dv">0</span>][<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math inline">\(\displaystyle w_{11} x_{11} + w_{12} x_{12} + w_{21} x_{21} + w_{22} x_{22}\)</span></p>
@@ -229,7 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This is exactly the expression for the first element of the convolution output. If you overlaid the filter on the top-left corner of the input matrix and then multipled elements and summed the products, this is the expression you’d get. By running the convolution function against symbols, we’ve been able to get the expressions that represent the convolution output.</p>
 <p>Before continuing, I want to make one improvement to the way we’re creating the matrices of symbols. In the code above, I created each <code>Symbol</code> in the matrices manually. Obviously, a couple of nested <code>for</code>-loops would accomplish this with less typing.</p>
 <p>But beyond that, notice that each symbol name contains its row and column index. SymPy actually has support for the concept of an <a href="https://docs.sympy.org/latest/modules/tensor/indexed.html#module-sympy.tensor.indexed">Indexed Object</a> that makes it a little easier to extract the indices later when doing reflection. So I created a helper function that creates arrays of indexed symbols:</p>
-<div id="cell-15" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ndarray_of_indexed_base(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    ib: IndexedBase, shape: Tuple[<span class="bu">int</span>, <span class="bu">int</span>], transform<span class="op">=</span><span class="kw">lambda</span> x: x</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> np.ndarray:</span>
@@ -240,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(data, dtype<span class="op">=</span><span class="bu">object</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With this helper, I can create the equivalent of the <code>X_test</code> matrix above with just one line:</p>
-<div id="cell-17" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="st">'x'</span>), (<span class="dv">4</span>, <span class="dv">4</span>))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>X_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -251,7 +251,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The representation looks a little different but it’s essentially still a matrix of symbols. Let’s create a little helper function to display matrices like this in a more readable format:</p>
-<div id="cell-19" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matrix_to_markdown(matrix: np.ndarray) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    h, w <span class="op">=</span> matrix.shape</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    elements <span class="op">=</span> (<span class="vs">r'\\'</span> <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>).join([<span class="st">' &amp; '</span>.join([latex(matrix[i][j]) <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(w)]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(h)])</span>
@@ -259,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    markdown <span class="op">=</span> <span class="st">'$$'</span> <span class="vs">r'\begin</span><span class="sc">{bmatrix}</span><span class="vs">'</span> <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span><span class="op">+</span> elements <span class="op">+</span> <span class="vs">r'\end</span><span class="sc">{bmatrix}</span><span class="vs">'</span> <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span> <span class="st">'$$'</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> markdown</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-20" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(X_test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math display">\[\begin{bmatrix}
@@ -271,7 +271,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The reason we want to use Indexed Objects for our symbols is that it’s easier to extract the indices and the name of the “base” (the thing being indexed):</p>
-<div id="cell-22" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test accessing the indices (note that we use zero-based indices to access </span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the array but the conceptual matrix indices are 1-based.)</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>test_eq(X_test[<span class="dv">0</span>][<span class="dv">0</span>].indices, (<span class="dv">1</span>, <span class="dv">1</span>))</span>
@@ -287,28 +287,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For simplicity, I’m assuming <span class="math inline">\(a^{[1]}\)</span> has just one channel, there’s just a single <span class="math inline">\(W^{[2]}\)</span> filter, and we’re looking at just a single training example.</p>
 <p>In the forward pass, <span class="math inline">\(z^{[2]}\)</span> would go through an activation function to produce <span class="math inline">\(a^{[2]}\)</span>, which would then propagate through subsequent layers, and ultimately produce an output, <span class="math inline">\(\hat{y}\)</span>.</p>
 <p>In fact, the forward pass calculation of <span class="math inline">\(z^{[2]}\)</span> for our layer of interest can now be represented with the following few lines of code:</p>
-<div id="cell-25" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> symbols(<span class="vs">r'b^{[2]}'</span>)</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>) <span class="op">+</span> b2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can examine the elements of <code>z2</code> to see that they represent the expressions we’d expect. E.g., the first element is:</p>
-<div id="cell-27" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>z2[<span class="dv">0</span>][<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math inline">\(\displaystyle b^{[2]} + {W^{[2]}}_{1,1} {a^{[1]}}_{1,1} + {W^{[2]}}_{1,2} {a^{[1]}}_{1,2} + {W^{[2]}}_{1,3} {a^{[1]}}_{1,3} + {W^{[2]}}_{2,1} {a^{[1]}}_{2,1} + {W^{[2]}}_{2,2} {a^{[1]}}_{2,2} + {W^{[2]}}_{2,3} {a^{[1]}}_{2,3} + {W^{[2]}}_{3,1} {a^{[1]}}_{3,1} + {W^{[2]}}_{3,2} {a^{[1]}}_{3,2} + {W^{[2]}}_{3,3} {a^{[1]}}_{3,3}\)</span></p>
 </div>
 </div>
 <p>This is exactly the sum of the weights multiplied by the corresponding elements in the left corner of the input matrix, plus the bias term. Similarly, the next element of <code>z2</code> contains the expression for the next convolution output (notice the <span class="math inline">\(a^{[1]}\)</span> column indices are shifted over by one):</p>
-<div id="cell-29" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>z2[<span class="dv">0</span>][<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math inline">\(\displaystyle b^{[2]} + {W^{[2]}}_{1,1} {a^{[1]}}_{1,2} + {W^{[2]}}_{1,2} {a^{[1]}}_{1,3} + {W^{[2]}}_{1,3} {a^{[1]}}_{1,4} + {W^{[2]}}_{2,1} {a^{[1]}}_{2,2} + {W^{[2]}}_{2,2} {a^{[1]}}_{2,3} + {W^{[2]}}_{2,3} {a^{[1]}}_{2,4} + {W^{[2]}}_{3,1} {a^{[1]}}_{3,2} + {W^{[2]}}_{3,2} {a^{[1]}}_{3,3} + {W^{[2]}}_{3,3} {a^{[1]}}_{3,4}\)</span></p>
 </div>
 </div>
 <p>If we wanted to visualize this expression, one way to do it would be to draw the three matrices, <span class="math inline">\(a^{[1]}\)</span>, <span class="math inline">\(W^{[2]}\)</span>, and <span class="math inline">\(z^{[2]}\)</span>, and highlight the elements of <span class="math inline">\(a^{[1]}\)</span> and <span class="math inline">\(W^{[2]}\)</span> that are multiplied together to produce a given element of <span class="math inline">\(z^{[2]}\)</span>. We’ll do this using <a href="https://www.manim.community/">Manim</a>. The first folded code cell below contains some drawing boilerplate you can ignore, and the second one renders this visualization and highlights the cells corresponding to the above expression.</p>
-<div id="cell-31" class="cell">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drawing boilerplate</span></span>
@@ -390,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a1_view, W2_view, z2_view</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-32" class="cell">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> HardCodedHighlights(Scene):</span>
@@ -432,7 +432,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(z2_view.get_highlighted_cell((<span class="dv">1</span>, <span class="dv">2</span>), color<span class="op">=</span>TEAL_A))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-33" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>manim <span class="op">-</span>v WARNING <span class="op">--</span>progress_bar <span class="va">None</span> <span class="op">-</span>ql <span class="op">-</span>s <span class="op">--</span>disable_caching HardCodedHighlights</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Magic above will run manim to generate the scene</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -451,7 +451,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 {W^{[2]}}_{1,1} {a^{[1]}}_{1,2} + {W^{[2]}}_{1,2} {a^{[1]}}_{1,3} + {W^{[2]}}_{1,3} {a^{[1]}}_{1,4} + {W^{[2]}}_{2,1} {a^{[1]}}_{2,2} + {W^{[2]}}_{2,2} {a^{[1]}}_{2,3} + {W^{[2]}}_{2,3} {a^{[1]}}_{2,4} + {W^{[2]}}_{3,1} {a^{[1]}}_{3,2} + {W^{[2]}}_{3,2} {a^{[1]}}_{3,3} + {W^{[2]}}_{3,3} {a^{[1]}}_{3,4}
 \]</span></p>
 <p>This turns out to be pretty easy to do. The key to doing this is that SymPy represents expressions in easily navigable tree structures. Details are in the <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/manipulation.html">documentation</a> but the basic idea is that every expression object has a <code>func</code> attribute and an <code>args</code> attribute that (roughly) correspond to the operation and operands respectively. A few examples:</p>
-<div id="cell-35" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> Symbol(<span class="st">'x'</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> <span class="dv">2</span> <span class="op">+</span> x</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -462,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>test_eq(expr.args, (<span class="dv">2</span>, x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Using <code>func</code> and <code>args</code> to reflect over expressions, we can write a function that takes an expression and returns a dictionary where the keys are matrix names, and the values are lists of indices to highlight.</p>
-<div id="cell-37" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_highlights_map(expr: Expr) <span class="op">-&gt;</span> Dict[<span class="bu">str</span>, List[Tuple]]:</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The expression needs to be either a sum of products or a single product</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> expr.func <span class="op">==</span> Add <span class="kw">or</span> expr.func <span class="op">==</span> Mul</span>
@@ -488,7 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This function makes a lot of assumptions that it’s dealing with expressions that are just sums of products of <code>Indexed</code> objects, but it suffices for what we need. We can test it with one of our expressions in the <code>z2</code> array:</p>
-<div id="cell-39" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>build_highlights_map(z2[<span class="dv">0</span>][<span class="dv">1</span>]<span class="op">-</span>b2) <span class="co"># Subtract off b2 because we aren't interested in the bias term for now.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>{'W^{[2]}': [(1, 1),
@@ -512,7 +512,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now, we can incorporate that into a Manim scene and add some animation to go through all of the expressions in <code>z2</code>.</p>
-<div id="cell-41" class="cell">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Some config knobs for the animations</span></span>
@@ -576,12 +576,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, z2_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-42" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>manim <span class="op">-</span>v WARNING <span class="op">--</span>progress_bar <span class="va">None</span> <span class="op">-</span>qm <span class="op">--</span>disable_caching ConvolutionForward</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Magic above will run manim to generate the scene</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This produces a video. To keep the notebook small, I’ve not embedded it directly, but the YouTube version below shows the output. This is a working animation of a convolution, generated directly from the expressions.</p>
-<div id="cell-44" class="cell">
+<div class="cell">
 <div class="cell-output cell-output-display">
 
         <iframe width="400" height="300" src="https://www.youtube.com/embed/Y7eoO3hZQYY?loop=1&amp;mute=1&amp;playlist=Y7eoO3hZQYY&amp;autoplay=1" frameborder="0" allowfullscreen="" allow="autoplay"></iframe>
@@ -591,7 +591,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="other-forms-of-convolution" class="level3">
 <h3 class="anchored" data-anchor-id="other-forms-of-convolution">Other Forms of Convolution</h3>
 <p>The nice thing about the way have this structured is that it’s trivial to visualize other forms of the convolution. For example, if we wanted to see what it looks like with padding set to 2 (making this a <a href="https://ai.stackexchange.com/a/27780">full convolution</a>), we’d just need to change the value of the <code>zero_pad_width</code> param in the call to <code>convolve()</code> and everything else works the same:</p>
-<div id="cell-46" class="cell">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FullConvolutionForward(Scene):</span>
@@ -624,11 +624,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-47" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>manim <span class="op">-</span>v WARNING <span class="op">--</span>progress_bar <span class="va">None</span> <span class="op">-</span>qm <span class="op">--</span>disable_caching FullConvolutionForward</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Magic above will run manim to generate the scene</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-48" class="cell">
+<div class="cell">
 <div class="cell-output cell-output-display">
 
         <iframe width="400" height="300" src="https://www.youtube.com/embed/Svs0BM8Gsok?loop=1&amp;mute=1&amp;playlist=Svs0BM8Gsok&amp;autoplay=1" frameborder="0" allowfullscreen="" allow="autoplay"></iframe>
@@ -694,7 +694,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 \]</span></p>
 <p>We could of course work out by hand what this would be. But we’ve got a whole symbolic engine at our disposal - lets use it instead!</p>
 <p>SymPy has the ability to differentiate symbolic expressions (and other <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/calculus.html">calculus abilities</a>). Here’s a quick showcase: let’s create a symbolic expression for: <span class="math inline">\(x = 2y^2 + 3z\)</span> and then differentiate with respect to <span class="math inline">\(y\)</span>:</p>
-<div id="cell-54" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>x, y, z <span class="op">=</span> symbols(<span class="st">'x y z'</span>)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>z </span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>x.diff(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -703,14 +703,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The answer, <span class="math inline">\(4y\)</span>, is of course what we expect. In the computation of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>, we know we’re going to need <span class="math inline">\(\frac{\partial z^{[2]}_{k, l}}{\partial W^{[2]}_{i, j}}\)</span>. Our <code>z2</code> matrix already contains the expressions for each element of <span class="math inline">\(z^{[2]}\)</span>. E.g. <span class="math inline">\(z^{[2]}_{1, 1}\)</span> is:</p>
-<div id="cell-56" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>z2[<span class="dv">0</span>][<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math inline">\(\displaystyle {B^{[2]}}_{1,1} + {W^{[2]}}_{1,1} {a^{[1]}}_{1,1} + {W^{[2]}}_{1,2} {a^{[1]}}_{1,2} + {W^{[2]}}_{1,3} {a^{[1]}}_{1,3} + {W^{[2]}}_{2,1} {a^{[1]}}_{2,1} + {W^{[2]}}_{2,2} {a^{[1]}}_{2,2} + {W^{[2]}}_{2,3} {a^{[1]}}_{2,3} + {W^{[2]}}_{3,1} {a^{[1]}}_{3,1} + {W^{[2]}}_{3,2} {a^{[1]}}_{3,2} + {W^{[2]}}_{3,3} {a^{[1]}}_{3,3}\)</span></p>
 </div>
 </div>
 <p>We can use the same <code>diff()</code> method shown above to compute the derivivatives with respect to the elements of <span class="math inline">\(W^{[2]}\)</span>. E.g., here’s <span class="math inline">\(\frac{\partial z^{[2]}_{1, 1}}{\partial W^{[2]}_{1, 1}}\)</span></p>
-<div id="cell-58" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>z2[<span class="dv">0</span>][<span class="dv">0</span>].diff(W2[<span class="dv">0</span>][<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math inline">\(\displaystyle {a^{[1]}}_{1,1}\)</span></p>
@@ -722,7 +722,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><span class="math display">\[
 \frac{\partial f}{\partial B_{i, j}} = \sum_{k, l} \frac{\partial f}{\partial A_{k, l}}\frac{\partial A_{k, l}}{\partial B_{i, j}}
 \]</span></p>
-<div id="cell-60" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matrix_matrix_chain_rule(df_dA: np.ndarray, A: np.ndarray, B: np.ndarray):</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Say f is a function, A &amp; B are matrices represented by ndarrays</span></span>
@@ -753,7 +753,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, let’s use our symbolic engine and our <code>matrix_matrix_chain_rule()</code> function to work out <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>.</p>
-<div id="cell-62" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Describe the loss function symbolically</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> symbols(<span class="st">'y'</span>)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>yhat <span class="op">=</span> symbols(<span class="vs">r'\hat</span><span class="sc">{y}</span><span class="vs">'</span>)</span>
@@ -776,7 +776,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>OK, we got a matrix, and each element of this is an expression. Before trying to dig into it, let’s just visualize it. Each expression looks like a sum of products and so like before, we can build a highlight map from it, and use this to animate a diagram. But we do need to make one tiny change to <code>build_highlights_map()</code>, to make it deal with the derivatives of indexed objects.</p>
-<div id="cell-64" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_highlights_map(expr: Expr) <span class="op">-&gt;</span> Dict[<span class="bu">str</span>, List[Tuple]]:</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The expression needs to be either a sum of products or a single product</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> expr.func <span class="op">==</span> Add <span class="kw">or</span> expr.func <span class="op">==</span> Mul</span>
@@ -808,7 +808,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now use this version of <code>build_highlights_map()</code> in drawing code to visualize the operations used to compute <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>. The result is the video below.</p>
-<div id="cell-66" class="cell">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recreate ufunc for build_highlights_map now that we've updated it</span></span>
@@ -885,11 +885,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, dW2_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-67" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>manim <span class="op">-</span>v WARNING  <span class="op">--</span>progress_bar <span class="va">None</span> <span class="op">-</span>qm <span class="op">--</span>disable_caching BackPropDW2</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Magic above will run manim to generate the scene</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-68" class="cell">
+<div class="cell">
 <div class="cell-output cell-output-display">
 
         <iframe width="400" height="300" src="https://www.youtube.com/embed/twJifMiFloA?loop=1&amp;mute=1&amp;playlist=twJifMiFloA&amp;autoplay=1" frameborder="0" allowfullscreen="" allow="autoplay"></iframe>
@@ -897,13 +897,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>This looks a whole lot like a convolution of <span class="math inline">\(a^{[1]}\)</span> with <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span>. We can confirm this with the equations:</p>
-<div id="cell-70" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>display(dW2[<span class="dv">0</span>][<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math inline">\(\displaystyle \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,1} + \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,2} + \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,3} + \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,4} + \frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,1} + \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,2} + \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,3} + \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,4} + \frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,1} + \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,2} + \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,3} + \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,4} + \frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,1} + \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,2} + \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,3} + \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,4}\)</span></p>
 </div>
 </div>
-<div id="cell-71" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>display(dW2[<span class="dv">1</span>][<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math inline">\(\displaystyle \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,1} + \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,2} + \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,3} + \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,4} + \frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,1} + \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,2} + \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,3} + \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,4} + \frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,1} + \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,2} + \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,3} + \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,4} + \frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{5,1} + \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{5,2} + \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{5,3} + \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{5,4}\)</span></p>
@@ -916,7 +916,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 \frac{\partial \mathcal{L}}{\partial W^{[2]}} = a^{[1]} * \frac{\partial \mathcal{L}}{\partial z^{[2]}}
 \]</span></p>
 <p>In code:</p>
-<div id="cell-73" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>test_eq(convolve(a1, dz2, <span class="dv">0</span>, <span class="dv">1</span>), dW2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -928,7 +928,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 \frac{\partial \mathcal{L}}{\partial a^{[1]}_{i, j}} = \sum_{k, l} \frac{\partial \mathcal{L}}{\partial z^{[2]}_{k, l}}\frac{\partial z^{[2]}_{k, l}}{\partial a^{[1]}_{i, j}}
 \]</span></p>
 <p>And of course, we don’t have to do this by hand.</p>
-<div id="cell-75" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>da1 <span class="op">=</span> matrix_matrix_chain_rule(dz2, z2, a1)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(da1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -944,7 +944,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Again, an matrix of expressions and the shape looks interesting. Because these expressions are sums of products of indexed expressions, we can build a highlights map and visualize it.</p>
-<div id="cell-77" class="cell">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BackPropDa1(Scene):</span>
@@ -995,11 +995,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb40-46"><a href="#cb40-46" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, da1_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-78" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>manim <span class="op">-</span>v WARNING  <span class="op">--</span>progress_bar <span class="va">None</span> <span class="op">-</span>qm <span class="op">--</span>disable_caching BackPropDa1</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Magic above will run manim to generate the scene</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-79" class="cell">
+<div class="cell">
 <div class="cell-output cell-output-display">
 
         <iframe width="400" height="300" src="https://www.youtube.com/embed/oZ9CKJ1gYls?loop=1&amp;mute=1&amp;playlist=oZ9CKJ1gYls&amp;autoplay=1" frameborder="0" allowfullscreen="" allow="autoplay"></iframe>
@@ -1007,7 +1007,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Like in other examples, I’ve put the inputs on the left and middle and the output (<span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span>) on the right. This is not quite a straight convolution like we saw in <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>, but it does look somewhat reminiscient of the full convolution (convolution with padding) we looked at in the <a href="#other-forms-of-convolution">Other Forms of Convolution</a> section. Only, it’s sort of backwards. Whereas in the full convolution, the multiplications start with the bottom-right corner of the convolution filter, here they start at the top-left. We could make this match by rotating <span class="math inline">\(W^{[2]}\)</span> by 180°.</p>
-<div id="cell-81" class="cell">
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BackPropDa1WithRotation(Scene):</span>
@@ -1080,11 +1080,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb42-68"><a href="#cb42-68" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, da1_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-82" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>manim <span class="op">-</span>v WARNING  <span class="op">--</span>progress_bar <span class="va">None</span> <span class="op">-</span>qm <span class="op">--</span>disable_caching BackPropDa1WithRotation</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Magic above will run manim to generate the scene</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-83" class="cell">
+<div class="cell">
 <div class="cell-output cell-output-display">
 
         <iframe width="400" height="300" src="https://www.youtube.com/embed/RllkdgU7R_A?loop=1&amp;mute=1&amp;playlist=RllkdgU7R_A&amp;autoplay=1" frameborder="0" allowfullscreen="" allow="autoplay"></iframe>
@@ -1099,7 +1099,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>I wasn’t able to find an official mathematical notation for “full convolution” so I just made up <span class="math inline">\(*_{full}\)</span></p>
 </blockquote>
 <p>We can also check it in code:</p>
-<div id="cell-85" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test that the full convolution of dz2 with the 180°-rotated W2 is equal to the da1 we calculated.</span></span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>test_eq(</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    convolve(</span>
@@ -1155,7 +1155,7 @@ z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
 \frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}_{11}}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}_{11}}\frac{\partial z^{[2]}_{11}}{\partial \mathbf{B^{[2]}_{11}}} + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{12}}\frac{\partial z^{[2]}_{12}}{\partial \mathbf{B^{[2]}_{11}}} + \cdots + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{44}}\frac{\partial z^{[2]}_{44}}{\partial \mathbf{B^{[2]}_{11}}}
 \]</span></p>
 <p>Of course, many of these terms are zero because <span class="math inline">\(\frac{\partial z^{[2]}_{k, l}}{\partial \mathbf{B^{[2]}_{i, j}}} = 0\)</span> when <span class="math inline">\(k \neq i\)</span> or <span class="math inline">\(l \neq j\)</span>. But rather than trying to reason about this ourselves or simplify by hand to work out what this is really saying, we can instead just use <code>matrix_matrix_chain_rule()</code> to do it for us:</p>
-<div id="cell-87" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Redo the calculation of z2 using the B2 matrix</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
@@ -1181,7 +1181,7 @@ z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
 \frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}}
 \]</span></p>
 <p>in code:</p>
-<div id="cell-89" class="cell">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>test_eq(dB2, dz2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -1268,9 +1268,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1280,17 +1281,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1303,61 +1295,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    if (id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        for (let i = 0; i < 2; i++) {
-          container.appendChild(note.children[i].cloneNode(true));
-        }
-        return container.innerHTML
-      } else {
-        return note.innerHTML;
-      }
-    } else {
-      return note.innerHTML;
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      try { hash = new URL(url).hash; } catch {}
-      const id = hash.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note !== null) {
-        try {
-          const html = processXRef(id, note);
-          instance.setContent(html);
-        } finally {
-          instance.enable();
-          instance.show();
-        }
-      } else {
-        // See if we can fetch this
-        fetch(url.split('#')[0])
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.getElementById(id);
-          console.log(htmlDoc.body.innerHTML);
-          if (note !== null) {
-            const html = processXRef(id, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1401,7 +1338,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
